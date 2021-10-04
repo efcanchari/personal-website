@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  #website project
+  website:
+    image: efcanchari/website:1.0
+    depends_on:
+      - postgresql
+    restart: always
+    networks:
+      webcv_network:
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_USER=db_user
+      - DB_PASS=Lt5gV9u4&3dX
+      - DB_SERVER=postgresql
+      - DB_PORT=5432
+      - DB_NAME=db_website
+
+  #Database service
+  postgresql:
+    image: postgres
+    restart: always
+    networks:
+      webcv_network:
+    environment:
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=Lt5gV9u4&3dX
+      - POSTGRES_DB=db_website
+    volumes:
+      - ./app-data:/var/lib/postgresql/data
+
+  #PGadmin
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    depends_on:
+      - postgresql
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@nonmail.com
+      PGADMIN_DEFAULT_PASSWORD: TM7A!gd4sYK9
+    ports:
+      - "5050:80"
+    networks:
+      webcv_network:
+networks:
+  webcv_network:
